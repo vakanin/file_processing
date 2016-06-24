@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 
 /**
- * @author avakanin
+ * @author Alexander Vakanin
  *
  */
 public class Main {

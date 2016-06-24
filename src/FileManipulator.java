@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 
 /**
- * @author avakanin
+ * @author Alexander Vakanin
  *
  */
 public class FileManipulator {
