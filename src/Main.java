@@ -1,6 +1,8 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 
@@ -9,6 +11,7 @@ import java.util.Scanner;
  *
  */
 public class Main {
+  private static final Logger log = Logger.getLogger(Main.class.getName());
   private static Scanner scanner = new Scanner(System.in);
   private static File file;
 
@@ -39,8 +42,14 @@ public class Main {
 
     System.out.println();
     
-    FileManipulator manipulator = new FileManipulator(file);
-    
+    Manipulator manipulator;
+    if (file.length() < 1048576) { // 1Mb = 1048576 bytes
+      manipulator = new SmallFileManipulator(file);
+    }
+    else {
+      manipulator = new LargeFileManipulator(file);
+    }
+
     do {
       System.out.println("---------- Menu ----------");
       System.out.println("1 - Validate the file contents");
@@ -69,7 +78,7 @@ public class Main {
           System.exit(0);
           break;
         case 1:
-          FileValidator.validateFileContent(file);
+          validateFileContent();
           break;
         case 2:
           switchLines(manipulator);
@@ -108,7 +117,17 @@ public class Main {
     scanner.close();
   }
   
-  private static void switchLines(FileManipulator manipulator) {
+  private static void validateFileContent() {
+    if (FileValidator.validateFileContent(file)) {
+      System.out.println("VALIDATION SUCCESSFUL");
+    }
+    else {
+      System.out.println("VALIDATION FAILED");
+    }
+    
+  }
+  
+  private static void switchLines(Manipulator manipulator) {
     System.out.println("Please enter line indexes separated with interval. Example: 17 18 (<first_line_index> <second_line_index>)");
     System.out.print(">");
     String input = scanner.nextLine();
@@ -133,11 +152,13 @@ public class Main {
       System.err.println("There are not so many lines in file. Operation FAILED");
     } 
     catch (IOException e) {
+      e.printStackTrace();
+      log.log(Level.SEVERE, e.getMessage());
       System.err.println("Something wrong happened. Operation FAILED. Please try again");
     }
   }
   
-  private static void switchNumbers(FileManipulator manipulator) {
+  private static void switchNumbers(Manipulator manipulator) {
     System.out.println("Please enter line and character indexes separated with intervals.");
     System.out.println("Follow this pattern: <first_line_index> <first_line_number_index> <second_line_index> <second_line_number_index> (Example: 17 18 23 14)");
     System.out.print(">");
@@ -169,7 +190,7 @@ public class Main {
     }
   }
   
-  private static void insertNumber(FileManipulator manipulator) {
+  private static void insertNumber(Manipulator manipulator) {
     System.out.println("Please enter line index, character index and number value separated with intervals. Number value must be from 0 to 9");
     System.out.println("Follow this pattern: <line_index> <line_number_index> <number to be inserted>");
     System.out.print(">");
@@ -203,7 +224,7 @@ public class Main {
     }
   }
   
-  private static void readNumber(FileManipulator manipulator) {
+  private static void readNumber(Manipulator manipulator) {
     System.out.println("Please enter line index and character index separated with interval. Example: 17 18");
     System.out.println("Follow this pattern: <line_index> <line_number_index>");
     System.out.print(">");
@@ -234,7 +255,7 @@ public class Main {
     }
   }
   
-  private static void modifyNumber(FileManipulator manipulator) {
+  private static void modifyNumber(Manipulator manipulator) {
     System.out.println("Please enter line index, character index and number value separated with intervals. Number value must be from 0 to 9");
     System.out.println("Follow this pattern: <line_index> <line_number_index> <number to be set>");
     System.out.print(">");
@@ -268,7 +289,7 @@ public class Main {
     }
   }
 
-  private static void removeNumber(FileManipulator manipulator) {
+  private static void removeNumber(Manipulator manipulator) {
     System.out.println("Please enter line index and character index separated with interval. Example: 17 18");
     System.out.println("Follow this pattern: <line_index> <line_number_index>");
     System.out.print(">");

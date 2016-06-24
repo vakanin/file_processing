@@ -50,12 +50,6 @@ public class FileValidator {
       System.err.println("Something wrong was happened. File " + file.getAbsolutePath() + " cannot be opened for reading!");
       log.log(Level.SEVERE, e.toString(), e);
     }
-    if (success) {
-      System.out.println("VALIDATION SUCCESSFUL");
-    }
-    else {
-      System.out.println("VALIDATION FAILED");
-    }
     return success;
   }
   
