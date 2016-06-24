@@ -46,17 +46,26 @@ public class Main {
       System.out.println("1 - Validate the file contents");
       System.out.println("2 - Switch entire line from the file with an entire other line");
       System.out.println("3 - Switch number at specific index in one line with a number with specific index from another line");
-      System.out.println("4 - Update");
-      System.out.println("5 - Remove");
+      System.out.println("4 - Insert a number at a given position in the file");
+      System.out.println("5 - Read a number at a given position");
+      System.out.println("6 - Modify a number at a given position");
+      System.out.println("7 - Remove a number at a given position");
       System.out.println("0 - Exit");
       System.out.println("--------------------------");
       
       System.out.print(">");
-      selection = scanner.nextInt();
+      try {
+        selection = scanner.nextInt();
+      }
+      catch (Throwable e) {
+        selection = Integer.MAX_VALUE;
+      }
       scanner.nextLine();
       
       switch(selection) {
         case 0:
+          System.out.println();
+          System.out.println("TERMINATED");
           System.exit(0);
           break;
         case 1:
@@ -67,6 +76,18 @@ public class Main {
           break;
         case 3:
           switchNumbers(manipulator);
+          break;
+        case 4:
+          insertNumber(manipulator);
+          break;
+        case 5:
+          readNumber(manipulator);
+          break;
+        case 6:
+          modifyNumber(manipulator);
+          break;
+        case 7:
+          removeNumber(manipulator);
           break;
         default:
             System.out.println("Invalid option. Please try again");
@@ -91,28 +112,28 @@ public class Main {
     System.out.println("Please enter line indexes separated with interval. Example: 17 18 (<first_line_index> <second_line_index>)");
     System.out.print(">");
     String input = scanner.nextLine();
-    String[] indexes = input.split(" +");
+    String[] indexes = input.trim().split(" +");
     if (indexes.length != 2) {
-      System.err.println("Invalid input. Line indexes must be only two numbers, separated with interval. Please try again");
+      System.err.println("Invalid input. Line indexes must be two numbers, separated with interval. Please try again");
       return;
     }
     try {
       int index1 = Integer.parseInt(indexes[0]);
       int index2 = Integer.parseInt(indexes[1]);
       manipulator.switchTwoLines(index1, index2);
-      System.out.println("Switch line operation SUCCESSFUL");
+      System.out.println("Operation SUCCESSFUL");
     }
     catch (NumberFormatException e) {
-      System.err.println("Invalid input. Line indexes must be numbers. Please try again");
+      System.err.println("Invalid input. Indexes must be numbers. Operation FAILED");
     }
     catch (IllegalArgumentException e) {
-      System.err.println("Line indexes cannot be less than 1. Operation FAILED");
+      System.err.println("Indexes cannot be less than 1. Operation FAILED");
     }
     catch (IndexOutOfBoundsException e) {
-      System.err.println("There is no so many lines in file. Operation FAILED");
+      System.err.println("There are not so many lines in file. Operation FAILED");
     } 
     catch (IOException e) {
-      System.err.println("Something wrong was happened. Switch operation FAILED. Please try again");
+      System.err.println("Something wrong happened. Operation FAILED. Please try again");
     }
   }
   
@@ -121,7 +142,7 @@ public class Main {
     System.out.println("Follow this pattern: <first_line_index> <first_line_number_index> <second_line_index> <second_line_number_index> (Example: 17 18 23 14)");
     System.out.print(">");
     String input = scanner.nextLine();
-    String[] indexes = input.split(" +");
+    String[] indexes = input.trim().split(" +");
     if (indexes.length != 4) {
       System.err.println("Invalid input. Indexes must be four numbers, separated with intervals. Please try again");
       return;
@@ -132,20 +153,148 @@ public class Main {
       int chIndex1 = Integer.parseInt(indexes[1]);
       int chIndex2 = Integer.parseInt(indexes[3]);
       manipulator.switchNumber(lIndex1, chIndex1, lIndex2, chIndex2);
-      System.out.println("Switch line operation SUCCESSFUL");
+      System.out.println("Operation SUCCESSFUL");
     }
     catch (NumberFormatException e) {
-      System.err.println("Invalid input. Indexes must be numbers. Please try again");
+      System.err.println("Invalid input. Indexes must be numbers. Operation FAILED");
     }
     catch (IllegalArgumentException e) {
       System.err.println("Indexes cannot be less than 1. Operation FAILED");
     }
     catch (IndexOutOfBoundsException e) {
-      System.err.println("There is no so many lines in file / There is no so many characters in some of specified lines. Operation FAILED");
+      System.err.println("There are not so many lines in file / There are not so many characters in some of specified lines. Operation FAILED");
     } 
     catch (IOException e) {
-      System.err.println("Something wrong was happened. Switch operation FAILED. Please try again");
+      System.err.println("Something wrong happened. Operation FAILED. Please try again");
+    }
+  }
+  
+  private static void insertNumber(FileManipulator manipulator) {
+    System.out.println("Please enter line index, character index and number value separated with intervals. Number value must be from 0 to 9");
+    System.out.println("Follow this pattern: <line_index> <line_number_index> <number to be inserted>");
+    System.out.print(">");
+    String input = scanner.nextLine();
+    String[] args = input.trim().split(" +");
+    if (args.length != 3) {
+      System.err.println("Invalid input. Arguments must be three numbers, separated with intervals. Please try again");
+      return;
+    }
+    try {
+      int lIndex = Integer.parseInt(args[0]);
+      int chIndex = Integer.parseInt(args[1]);
+      int number = Integer.parseInt(args[2]);
+      if (number < 0 || number > 9) {
+        throw new IllegalArgumentException();
+      }
+      manipulator.insertNumber(lIndex, chIndex, number);
+      System.out.println("Operation SUCCESSFUL");
+    }
+    catch (NumberFormatException e) {
+      System.err.println("Invalid input. All arguments must be numbers. Operation FAILED");
+    }
+    catch (IllegalArgumentException e) {
+      System.err.println("Indexes cannot be less than 1 and number value must be from 0 to 9. Operation FAILED");
+    }
+    catch (IndexOutOfBoundsException e) {
+      System.err.println("There are not so many lines in file / There are not so many characters in some of specified lines. Operation FAILED");
+    } 
+    catch (IOException e) {
+      System.err.println("Something wrong happened. Operation FAILED. Please try again");
+    }
+  }
+  
+  private static void readNumber(FileManipulator manipulator) {
+    System.out.println("Please enter line index and character index separated with interval. Example: 17 18");
+    System.out.println("Follow this pattern: <line_index> <line_number_index>");
+    System.out.print(">");
+    String input = scanner.nextLine();
+    String[] indexes = input.trim().split(" +");
+    if (indexes.length != 2) {
+      System.err.println("Invalid input. Indexes must be two numbers, separated with interval. Please try again");
+      return;
+    }
+    try {
+      int lIndex = Integer.parseInt(indexes[0]);
+      int chIndex = Integer.parseInt(indexes[1]);
+      char c = manipulator.readNumber(lIndex, chIndex);
+      System.out.println(c);
+      System.out.println("Operation SUCCESSFUL");
+    }
+    catch (NumberFormatException e) {
+      System.err.println("Invalid input. Indexes must be numbers. Operation FAILED");
+    }
+    catch (IllegalArgumentException e) {
+      System.err.println("Indexes cannot be less than 1. Operation FAILED");
+    }
+    catch (IndexOutOfBoundsException e) {
+      System.err.println("There are not so many lines in file / There are not so many characters in some of specified lines. Operation FAILED");
+    } 
+    catch (IOException e) {
+      System.err.println("Something wrong happened. Operation FAILED. Please try again");
+    }
+  }
+  
+  private static void modifyNumber(FileManipulator manipulator) {
+    System.out.println("Please enter line index, character index and number value separated with intervals. Number value must be from 0 to 9");
+    System.out.println("Follow this pattern: <line_index> <line_number_index> <number to be set>");
+    System.out.print(">");
+    String input = scanner.nextLine();
+    String[] args = input.trim().split(" +");
+    if (args.length != 3) {
+      System.err.println("Invalid input. Arguments must be three numbers, separated with intervals. Please try again");
+      return;
+    }
+    try {
+      int lIndex = Integer.parseInt(args[0]);
+      int chIndex = Integer.parseInt(args[1]);
+      int number = Integer.parseInt(args[2]);
+      if (number < 0 || number > 9) {
+        throw new IllegalArgumentException();
+      }
+      manipulator.modifyNumber(lIndex, chIndex, number);
+      System.out.println("Operation SUCCESSFUL");
+    }
+    catch (NumberFormatException e) {
+      System.err.println("Invalid input. All arguments must be numbers. Operation FAILED");
+    }
+    catch (IllegalArgumentException e) {
+      System.err.println("Indexes cannot be less than 1 and number value must be from 0 to 9. Operation FAILED");
+    }
+    catch (IndexOutOfBoundsException e) {
+      System.err.println("There are not so many lines in file / There are not so many characters in some of specified lines. Operation FAILED");
+    } 
+    catch (IOException e) {
+      System.err.println("Something wrong happened. Operation FAILED. Please try again");
     }
   }
 
+  private static void removeNumber(FileManipulator manipulator) {
+    System.out.println("Please enter line index and character index separated with interval. Example: 17 18");
+    System.out.println("Follow this pattern: <line_index> <line_number_index>");
+    System.out.print(">");
+    String input = scanner.nextLine();
+    String[] indexes = input.trim().split(" +");
+    if (indexes.length != 2) {
+      System.err.println("Invalid input. Indexes must be two numbers, separated with interval. Please try again");
+      return;
+    }
+    try {
+      int lIndex = Integer.parseInt(indexes[0]);
+      int chIndex = Integer.parseInt(indexes[1]);
+      manipulator.removeNumber(lIndex, chIndex);
+      System.out.println("Operation SUCCESSFUL");
+    }
+    catch (NumberFormatException e) {
+      System.err.println("Invalid input. Indexes must be numbers. Operation FAILED");
+    }
+    catch (IllegalArgumentException e) {
+      System.err.println("Indexes cannot be less than 1. Operation FAILED");
+    }
+    catch (IndexOutOfBoundsException e) {
+      System.err.println("There are not so many lines in file / There are not so many characters in some of specified lines. Operation FAILED");
+    } 
+    catch (IOException e) {
+      System.err.println("Something wrong happened. Operation FAILED. Please try again");
+    }
+  }
 }

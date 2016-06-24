@@ -41,6 +41,7 @@ public class FileManipulator {
     Collections.swap(lines, index1 - 1, index2 - 1);   // because we count lines from 1
     // validate all lines
     if (!validateLines(lines)) {
+      System.err.println("After switching this file contains errors. Switch operation FAILED");
       return false;
     }
     writeLines(lines);
@@ -63,7 +64,7 @@ public class FileManipulator {
    */
   public boolean switchNumber(int lIndex1, int chIndex1, int lIndex2, int chIndex2) throws IOException {
     if (--lIndex1 < 0 || --lIndex2 < 0 || --chIndex1 < 0 || --chIndex2 < 0) {
-      log.log(Level.WARNING, "index1 < 1 or index2 < 1");
+      log.log(Level.WARNING, "lIndex1 < 1, lIndex2 < 1, chIndex1 < 1 or chIndex2 < 1");
       throw new IllegalArgumentException();
     }
     
@@ -77,24 +78,128 @@ public class FileManipulator {
     lines.set(lIndex2, line2.toString());
     // validate all lines
     if (!validateLines(lines)) {
+      System.err.println("After switching this file contains errors. Switch operation FAILED");
       return false;
     }
     writeLines(lines);
     return true;
   }
   
+  /**
+   * Insert a number at a given position in the file. 
+   * The user should provide the two indexes at which the number should be inserted and the value of that number. 
+   * The number should be inserted in that position and the content of the row from that position to it’s end should be shifted with one index to the right.<br> 
+   * Example user input:<br>
+   * <xmp><line_index> <line_number_index> <number to be inserted></xmp>
+   * @param lIndex
+   * @param chIndex
+   * @param number
+   * @return
+   * @throws IOException
+   * @throws IllegalArgumentException
+   * @throws IndexOutOfBoundsException
+   */
   public boolean insertNumber(int lIndex, int chIndex, int number) throws IOException {
     if (--lIndex < 0 || --chIndex < 0) {
-      log.log(Level.WARNING, "index1 < 1 or index2 < 1");
+      log.log(Level.WARNING, "lIndex < 1 or chIndex < 1");
       throw new IllegalArgumentException();
     }
     
     ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(file.toPath());
-    String line1 = lines.get(lIndex);
-    line1 = line1.substring(0, chIndex) + number + line1.substring(chIndex);
-    lines.set(lIndex, line1);
+    String line = lines.get(lIndex);
+    line = line.substring(0, chIndex) + number + line.substring(chIndex);
+    lines.set(lIndex, line);
  // validate all lines
     if (!validateLines(lines)) {
+      System.err.println("After inserting this file contains errors. Insert operation FAILED");
+      return false;
+    }
+    writeLines(lines);
+    return true;
+  }
+  
+  /**
+   * Read a number at a given position. The user should provide the two indexes of a number to be red. 
+   * The application should print that number to the user. 
+   * Example user input:<br> 
+   * <xmp><line_index> <line_number_index></xmp>
+   *  
+   * @param lIndex
+   * @param chIndex
+   * @param number
+   * @return
+   * @throws IOException
+   * @throws IllegalArgumentException
+   * @throws IndexOutOfBoundsException
+   */
+  public char readNumber(int lIndex, int chIndex) throws IOException {
+    if (--lIndex < 0 || --chIndex < 0) {
+      log.log(Level.WARNING, "lIndex < 1 or chIndex < 1");
+      throw new IllegalArgumentException();
+    }
+    
+    ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(file.toPath());
+    String line = lines.get(lIndex);
+    return line.charAt(chIndex);
+  }
+  
+  /**
+   * Modify a number at a given position. The user should provide the two indexes of the number to be modified and a value. 
+   * The value given by the user should replace the existing value at that position. 
+   * Example user input:<br>
+   * <xmp><line_index> <line_number_index> <number to be set></xmp>
+   *  
+   * @param lIndex
+   * @param chIndex
+   * @param number
+   * @return
+   * @throws IOException
+   * @throws IllegalArgumentException
+   * @throws IndexOutOfBoundsException
+   */
+  public boolean modifyNumber(int lIndex, int chIndex, int number) throws IOException {
+    if (--lIndex < 0 || --chIndex < 0) {
+      log.log(Level.WARNING, "lIndex < 1 or chIndex < 1");
+      throw new IllegalArgumentException();
+    }
+    
+    ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(file.toPath());
+    String line = lines.get(lIndex);
+    line = line.substring(0, chIndex) + number + line.substring(chIndex + 1, line.length());
+    lines.set(lIndex, line);
+    // validate all lines
+    if (!validateLines(lines)) {
+      System.err.println("After modifying this file contains errors. Insert operation FAILED");
+      return false;
+    }
+    writeLines(lines);
+    return true;
+  }
+  
+  /**
+   *  Remove a number at a given position. The user should provide the two indexes of the number to be removed. 
+   *  All remaining numbers in that row should be moved with one index to the left. 
+   *  Example user input:<br>
+   *  <xmp><line_index> <line_number_index></xmp> 
+   * @param lIndex
+   * @param chIndex
+   * @return
+   * @throws IOException
+   * @throws IllegalArgumentException
+   * @throws IndexOutOfBoundsException
+   */
+  public boolean removeNumber(int lIndex, int chIndex) throws IOException {
+    if (--lIndex < 0 || --chIndex < 0) {
+      log.log(Level.WARNING, "lIndex < 1 or chIndex < 1");
+      throw new IllegalArgumentException();
+    }
+    ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(file.toPath());
+    String line = lines.get(lIndex);
+    line = line.substring(0, chIndex) + line.substring(chIndex + 1, line.length());
+    lines.set(lIndex, line);
+    // validate all lines
+    if (!validateLines(lines)) {
+      System.err.println("After removing this file contains errors. Insert operation FAILED");
       return false;
     }
     writeLines(lines);
@@ -112,7 +217,6 @@ public class FileManipulator {
       ++count;
       String err = FileValidator.checkLine(line, count);
       if (!err.isEmpty()) {
-        System.err.println("After switching this file contains errors. Switch operation FAILED");
         return false;
       }
     }
@@ -137,4 +241,5 @@ public class FileManipulator {
       bw.flush();
     }
   }
+  
 }
