@@ -139,8 +139,9 @@ public class Main {
     try {
       int index1 = Integer.parseInt(indexes[0]);
       int index2 = Integer.parseInt(indexes[1]);
-      manipulator.switchTwoLines(index1, index2);
-      System.out.println("Operation SUCCESSFUL");
+      if (manipulator.switchTwoLines(index1, index2)) {
+        System.out.println("Operation SUCCESSFUL");
+      }
     }
     catch (NumberFormatException e) {
       System.err.println("Invalid input. Indexes must be numbers. Operation FAILED");
@@ -152,7 +153,6 @@ public class Main {
       System.err.println("There are not so many lines in file. Operation FAILED");
     } 
     catch (IOException e) {
-      e.printStackTrace();
       log.log(Level.SEVERE, e.getMessage());
       System.err.println("Something wrong happened. Operation FAILED. Please try again");
     }
@@ -173,8 +173,9 @@ public class Main {
       int lIndex2 = Integer.parseInt(indexes[2]);
       int chIndex1 = Integer.parseInt(indexes[1]);
       int chIndex2 = Integer.parseInt(indexes[3]);
-      manipulator.switchNumber(lIndex1, chIndex1, lIndex2, chIndex2);
-      System.out.println("Operation SUCCESSFUL");
+      if (manipulator.switchNumber(lIndex1, chIndex1, lIndex2, chIndex2)) {
+        System.out.println("Operation SUCCESSFUL");
+      }
     }
     catch (NumberFormatException e) {
       System.err.println("Invalid input. Indexes must be numbers. Operation FAILED");
@@ -207,8 +208,9 @@ public class Main {
       if (number < 0 || number > 9) {
         throw new IllegalArgumentException();
       }
-      manipulator.insertNumber(lIndex, chIndex, number);
-      System.out.println("Operation SUCCESSFUL");
+      if (manipulator.insertNumber(lIndex, chIndex, number)) {
+    	System.out.println("Operation SUCCESSFUL");
+      }
     }
     catch (NumberFormatException e) {
       System.err.println("Invalid input. All arguments must be numbers. Operation FAILED");
@@ -272,8 +274,9 @@ public class Main {
       if (number < 0 || number > 9) {
         throw new IllegalArgumentException();
       }
-      manipulator.modifyNumber(lIndex, chIndex, number);
-      System.out.println("Operation SUCCESSFUL");
+      if (manipulator.modifyNumber(lIndex, chIndex, number)) {
+    	System.out.println("Operation SUCCESSFUL");
+      }
     }
     catch (NumberFormatException e) {
       System.err.println("Invalid input. All arguments must be numbers. Operation FAILED");
@@ -302,8 +305,9 @@ public class Main {
     try {
       int lIndex = Integer.parseInt(indexes[0]);
       int chIndex = Integer.parseInt(indexes[1]);
-      manipulator.removeNumber(lIndex, chIndex);
-      System.out.println("Operation SUCCESSFUL");
+      if (manipulator.removeNumber(lIndex, chIndex)) {
+        System.out.println("Operation SUCCESSFUL");
+      }
     }
     catch (NumberFormatException e) {
       System.err.println("Invalid input. Indexes must be numbers. Operation FAILED");
