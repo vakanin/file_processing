@@ -1,11 +1,14 @@
 # File Processing Application 
 #### How to start
+
 ##### Windows:
 1. git clone https://github.com/vakanin/file_processing.git
 2. run: file_processing/build/run.bat
+
 ##### Linux:
 1. git clone https://github.com/vakanin/file_processing.git
 2. run: file_processing/build/linux/run.bat
+
 #### Task description: 
 
 Develop a command-line application in Java that allows the user to manipulate text files with number content. The final solution should provide the following: 
