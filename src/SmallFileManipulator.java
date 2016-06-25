@@ -2,6 +2,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,7 +32,7 @@ public class SmallFileManipulator implements Manipulator {
       log.log(Level.WARNING, "index1 < 1 or index2 < 1");
       throw new IllegalArgumentException();
     }
-    ArrayList<String> lines = (ArrayList) Files.readAllLines(file.toPath());
+    ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
     Collections.swap(lines, index1 - 1, index2 - 1);   // because we count lines from 1
     // validate all lines
     if (!validateLines(lines)) {
@@ -53,7 +54,7 @@ public class SmallFileManipulator implements Manipulator {
       throw new IllegalArgumentException();
     }
     
-    ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(file.toPath());
+    ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
     StringBuilder line1 = new StringBuilder(lines.get(lIndex1));
     StringBuilder line2 = new StringBuilder(lines.get(lIndex2));
     char ch = line1.charAt(chIndex1);
@@ -80,7 +81,7 @@ public class SmallFileManipulator implements Manipulator {
       throw new IllegalArgumentException();
     }
     
-    ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(file.toPath());
+    ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
     String line = lines.get(lIndex);
     line = line.substring(0, chIndex) + number + line.substring(chIndex);
     lines.set(lIndex, line);
@@ -103,7 +104,7 @@ public class SmallFileManipulator implements Manipulator {
       throw new IllegalArgumentException();
     }
     
-    ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(file.toPath());
+    ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
     String line = lines.get(lIndex);
     return line.charAt(chIndex);
   }
@@ -118,7 +119,7 @@ public class SmallFileManipulator implements Manipulator {
       throw new IllegalArgumentException();
     }
     
-    ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(file.toPath());
+    ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
     String line = lines.get(lIndex);
     line = line.substring(0, chIndex) + number + line.substring(chIndex + 1, line.length());
     lines.set(lIndex, line);
@@ -140,7 +141,7 @@ public class SmallFileManipulator implements Manipulator {
       log.log(Level.WARNING, "lIndex < 1 or chIndex < 1");
       throw new IllegalArgumentException();
     }
-    ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(file.toPath());
+    ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
     String line = lines.get(lIndex);
     line = line.substring(0, chIndex) + line.substring(chIndex + 1, line.length());
     lines.set(lIndex, line);
