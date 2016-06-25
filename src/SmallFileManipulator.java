@@ -45,7 +45,7 @@ public class SmallFileManipulator implements Manipulator {
   
   
   /* (non-Javadoc)
-   * @see Manipulator#switchTwoLines(int, int)
+   * @see Manipulator#switchNumber(int, int, int, int)
    */
   @Override
   public boolean switchNumber(int lIndex1, int chIndex1, int lIndex2, int chIndex2) throws IOException {
@@ -72,7 +72,7 @@ public class SmallFileManipulator implements Manipulator {
   }
   
   /* (non-Javadoc)
-   * @see Manipulator#switchTwoLines(int, int)
+   * @see Manipulator#insertNumber(int, int, int)
    */
   @Override
   public boolean insertNumber(int lIndex, int chIndex, int number) throws IOException {
@@ -95,7 +95,7 @@ public class SmallFileManipulator implements Manipulator {
   }
   
   /* (non-Javadoc)
-   * @see Manipulator#switchTwoLines(int, int)
+   * @see Manipulator#readNumber(int, int)
    */
   @Override
   public char readNumber(int lIndex, int chIndex) throws IOException {
@@ -110,7 +110,7 @@ public class SmallFileManipulator implements Manipulator {
   }
   
   /* (non-Javadoc)
-   * @see Manipulator#switchTwoLines(int, int)
+   * @see Manipulator#modifyNumber(int, int, int)
    */
   @Override
   public boolean modifyNumber(int lIndex, int chIndex, int number) throws IOException {
@@ -132,8 +132,9 @@ public class SmallFileManipulator implements Manipulator {
     return true;
   }
   
+
   /* (non-Javadoc)
-   * @see Manipulator#switchTwoLines(int, int)
+   * @see Manipulator#removeNumber(int, int)
    */
   @Override
   public boolean removeNumber(int lIndex, int chIndex) throws IOException {
