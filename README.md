@@ -7,7 +7,7 @@
 
 ##### Linux:
 1. git clone https://github.com/vakanin/file_processing.git
-2. run: file_processing/build/linux/run.bat
+2. run: file_processing/build/linux/run.sh
 
 #### Task description: 
 
