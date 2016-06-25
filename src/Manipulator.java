@@ -36,7 +36,7 @@ public interface Manipulator {
   /**
    * Insert a number at a given position in the file. 
    * The user should provide the two indexes at which the number should be inserted and the value of that number. 
-   * The number should be inserted in that position and the content of the row from that position to it’s end should be shifted with one index to the right.<br> 
+   * The number should be inserted in that position and the content of the row from that position to end should be shifted with one index to the right.<br> 
    * Example user input:<br>
    * <xmp><line_index> <line_number_index> <number to be inserted></xmp>
    * @param lIndex
